@@ -1,14 +1,8 @@
-const mozcLicenseUrl =
-  "https://raw.githubusercontent.com/google/mozc/master/LICENSE";
 const mozcEmojiTsvUrl =
   "https://raw.githubusercontent.com/google/mozc/master/src/data/emoji/emoji_data.tsv";
 
-const fetchSplitText = async (url: string): Promise<string[]> => {
-  const res = await fetch(url);
-  return (await res.text()).split("\n");
-};
-
-const tsvData = await fetchSplitText(mozcEmojiTsvUrl);
+const res = await fetch(mozcEmojiTsvUrl);
+const tsvData = (await res.text()).split("\n");
 const result: Map<string, string> = new Map();
 
 for (const line of tsvData) {
@@ -23,17 +17,19 @@ for (const line of tsvData) {
   }
 }
 
-const mozcLicense = (await fetchSplitText(mozcLicenseUrl))
-  .map((line) => ";; " + line)
+const license = Deno.readTextFileSync("./LICENSE")
+  .split("\n")
+  .map((l) => ";; " + l)
   .join("\n");
 
 const jisyo = [...result.entries()]
   .map(([yomi, emoji]) => `${yomi} ${emoji}/`)
   .join("\n");
 
-const template = `;; This dictionary is generated from emoji_data.tsv in google/mozc (https://github.com/google/mozc) repository.
+const template =
+  `;; This dictionary is generated from emoji_data.tsv in google/mozc (https://github.com/google/mozc) repository.
 ;;
-${mozcLicense}
+${license}
 ;; okuri-nasi entries.
 ${jisyo}
 `;
