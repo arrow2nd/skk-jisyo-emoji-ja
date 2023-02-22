@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "generate": "deno run --allow-net --allow-write main.ts"
+  },
+  "lock": false
+}
