@@ -17,10 +17,7 @@ for (const line of tsvData) {
   }
 }
 
-const license = Deno.readTextFileSync("./LICENSE")
-  .split("\n")
-  .map((l) => ";; " + l)
-  .join("\n");
+const license = Deno.readTextFileSync("./LICENSE").replaceAll(/^/gm, ";; ");
 
 const jisyo = [...result.entries()]
   .map(([yomi, emoji]) => `${yomi} ${emoji}/`)
