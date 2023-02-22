@@ -1,0 +1,27 @@
+name: update
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Monday 00:00 (UTC)
+    - cron: "0 0 * * 1"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Regeneration emoji jisyo
+        run: deno task generate
+
+      - name: Commit the changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: 辞書を更新"
