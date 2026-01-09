@@ -20,6 +20,7 @@ for (const line of tsvData) {
 const license = Deno.readTextFileSync("./LICENSE").replaceAll(/^/gm, ";; ");
 
 const jisyo = [...result.entries()]
+  .sort((a, b) => a[0].localeCompare(b[0]))
   .map(([yomi, emoji]) => `${yomi} ${emoji}/`)
   .join("\n");
 
